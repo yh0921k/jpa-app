@@ -11,6 +11,7 @@ import study.jpa_app.domain.item.Item;
 import study.jpa_app.repository.ItemRepository;
 import study.jpa_app.repository.MemberRepository;
 import study.jpa_app.repository.OrderRepository;
+import study.jpa_app.repository.OrderSearch;
 
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class OrderService {
     order.cancel();
   }
 
-//  public List<Order> findOrders(OrderSearch orderSearch) {
-//    return orderRepository.findAll(orderSearch);
-//  }
+  public List<Order> findOrders(OrderSearch orderSearch) {
+    return orderRepository.findAll(orderSearch);
+  }
 }
