@@ -11,6 +11,7 @@ import study.jpa_app.domain.Member;
 import study.jpa_app.service.MemberService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -45,5 +46,11 @@ public class MemberController {
     return "redirect:/";
   }
 
+  @GetMapping("/members")
+  public String list(Model model) {
+    List<Member> members = memberService.findMembers();
+    model.addAttribute("members", members);
+    return "members/memberList";
+  }
 
 }
