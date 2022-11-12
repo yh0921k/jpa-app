@@ -9,6 +9,7 @@ import study.jpa_app.domain.Member;
 import study.jpa_app.service.MemberService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 
 @RestController // @Controller + @ResponseBody
 @RequiredArgsConstructor
@@ -21,6 +22,22 @@ public class MemberApiController {
     Long id = memberService.join(member);
 
     return new CreateMemberResponse(id);
+  }
+
+  @PostMapping("/api/v2/members")
+  public CreateMemberResponse saveMemberV2(@RequestBody @Valid CreateMemberRequest request) {
+
+    Member member = new Member();
+    member.setName(request.getName());
+
+    Long id = memberService.join(member);
+    return new CreateMemberResponse(id);
+  }
+
+  @Data
+  static class CreateMemberRequest {
+    @NotEmpty
+    private String name;
   }
 
   @Data
