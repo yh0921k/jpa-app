@@ -15,9 +15,7 @@ public class MemberService {
 
   private final MemberRepository memberRepository;
 
-  /**
-   * 회원 가입
-   */
+  /** 회원 가입 */
   // @Transactional 어노테이션이 클래스 레벨에 걸린 것보다 우선순위가 높음
   @Transactional
   public Long join(Member member) {
@@ -28,7 +26,7 @@ public class MemberService {
 
   private void validateDuplicateMember(Member member) {
     List<Member> findMembers = memberRepository.findByName(member.getName());
-    if(!findMembers.isEmpty()) {
+    if (!findMembers.isEmpty()) {
       throw new IllegalStateException("이미 존재하는 회원입니다.");
     }
   }
@@ -40,5 +38,11 @@ public class MemberService {
 
   public Member findOne(Long memberId) {
     return memberRepository.findOne(memberId);
+  }
+
+  @Transactional
+  public void update(Long id, String name) {
+    Member member = memberRepository.findOne(id);
+    member.setName(name);
   }
 }
