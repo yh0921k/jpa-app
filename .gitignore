@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/git,gradle,java,database,intellij,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=git,gradle,java,database,intellij,macos
 
+### QueryDSL ###
+src/main/generated/**
+
 ### Database ###
 *.accdb
 *.db

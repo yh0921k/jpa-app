@@ -1,10 +1,12 @@
 package study.jpa_app.repository;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
-import study.jpa_app.domain.Member;
 import study.jpa_app.domain.Order;
+import study.jpa_app.domain.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -108,5 +110,37 @@ public class OrderRepository {
         .setFirstResult(offset)
         .setMaxResults(limit)
         .getResultList();
+  }
+
+  public List<Order> findAllByQueryDSL(OrderSearch orderSearch) {
+    JPAQueryFactory query = new JPAQueryFactory(em);
+    QOrder order = QOrder.order;
+    QMember member = QMember.member;
+
+    return query
+        .select(order)
+        .from(order)
+        .join(order.member, member)
+        .where(statusEq(orderSearch.getOrderStatus()), nameLike(orderSearch.getMemberName()))
+        // 아래는 정적 쿼리, 위는 동적 쿼리
+        // .where(member.name.like(orderSearch.getMemberName()))
+        .limit(1000)
+        .fetch();
+  }
+
+  // 동적 쿼리
+  private BooleanExpression nameLike(String name) {
+    if (!StringUtils.hasText(name)) {
+      return null;
+    }
+    return QMember.member.name.like(name);
+  }
+
+  // 동적 쿼리
+  private BooleanExpression statusEq(OrderStatus statusCondition) {
+    if (statusCondition == null) {
+      return null;
+    }
+    return QOrder.order.status.eq(statusCondition);
   }
 }
