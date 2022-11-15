@@ -11,6 +11,8 @@ import study.jpa_app.domain.OrderItem;
 import study.jpa_app.domain.OrderStatus;
 import study.jpa_app.repository.OrderRepository;
 import study.jpa_app.repository.OrderSearch;
+import study.jpa_app.repository.order.query.OrderQueryDto;
+import study.jpa_app.repository.order.query.OrderQueryRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 public class OrderApiController {
 
   private final OrderRepository orderRepository;
+  private final OrderQueryRepository orderQueryRepository;
 
   @GetMapping("/api/v1/orders")
   public List<Order> ordersV1() {
@@ -57,6 +60,11 @@ public class OrderApiController {
     List<Order> orders = orderRepository.findAllWithMemberDelivery(offset, limit);
     List<OrderDto> collect = orders.stream().map(o -> new OrderDto(o)).collect(Collectors.toList());
     return collect;
+  }
+
+  @GetMapping("/api/v4/orders")
+  public List<OrderQueryDto> ordersV4(){
+    return orderQueryRepository.findOrderQueryDtos();
   }
 
   @Getter
