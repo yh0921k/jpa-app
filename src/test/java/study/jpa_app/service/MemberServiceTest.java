@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import study.jpa_app.domain.Member;
-import study.jpa_app.repository.MemberRepository;
+import study.jpa_app.repository.MemberRepositoryOld;
 
 import javax.persistence.EntityManager;
 
@@ -18,7 +18,8 @@ class MemberServiceTest {
 
   @Autowired MemberService memberService;
 
-  @Autowired MemberRepository memberRepository;
+  @Autowired
+  MemberRepositoryOld memberRepositoryOld;
 
   @Autowired EntityManager em;
 
@@ -33,7 +34,7 @@ class MemberServiceTest {
     em.flush();
 
     // then
-    assertEquals(member, memberRepository.findOne(savedId));
+    assertEquals(member, memberRepositoryOld.findOne(savedId));
   }
 
   @Test()
